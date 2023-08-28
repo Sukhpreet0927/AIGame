@@ -1,4 +1,5 @@
 import turtle
+import time
 
 window = turtle.Screen()
 window.title("Pong")
@@ -7,13 +8,12 @@ window.setup(width=900, height=600)
 window.tracer(0)
 
 #Paddle 1 for player 1
-class Paddle: 
-    def __init__(self, speed, shape, shapesize, color, x, y):
-        self.turtle = turtle.Turtle()
-        self.speed = speed
-        self.shape = shape
-        self.shapesize = shapesize
-        self.color = color
+class Paddle(turtle.Turtle):
+    def __init__(self, speed, shapesize, color, x, y):
+        super().__init__(shape='square')
+        self.speed(speed)  # Set the turtle speed based on the passed value
+        self.shapesize(stretch_wid=5, stretch_len=1)
+        self.color(color)
         self.penup()
         self.goto(x, y)
         self.y = y
@@ -32,9 +32,8 @@ class Paddle:
         self.hideturtle()
 
  
-# shapesize = "stretch_wid=5, stretch_len=1"
-# P1 = Paddle(0, "square", shapesize, "blue", -400, 0)
-# P2 = Paddle(0, "square", shapesize, "red", 400, 0)
+P1 = Paddle(0, shapesize=(5, 1), color="blue", x=400, y=0)
+P2 = Paddle(0, shapesize=(5, 1), color="red", x=-400, y=0)
 
 #print(P1.get_speed())
 
@@ -55,20 +54,30 @@ class Paddle:
 # Paddle_2.color("red")
 # Paddle_2.penup()
 # Paddle_2.goto(400, 0)
-
 #Ball
-class Ball:
-    def __init__(self, speed, shape, color, x, y, dx, dy):
-        self.turtle = turtle.Turtle()
-        self.speed = speed
-        self.shape = shape
-        self.color = color
+class Ball(turtle.Turtle):
+    def __init__(self, speed, color, x, y, dx, dy):
+        super().__init__(shape='circle')
+        self.speed(speed)
+        self.color(color)
         self.penup()
         self.goto(x, y)
         self.y = y
         self.x = x
         self.dx = dx
         self.dy = dy
+
+
+        # self.turtle = turtle.Turtle()
+        # self.turtle.speed(speed)  # Set the turtle speed
+        # self.turtle.shape(shape)
+        # self.turtle.color(color)
+        # self.turtle.penup()
+        # self.turtle.goto(x, y)
+        # self.y = y
+        # self.x = x
+        # self.dx = dx
+        # self.dy = dy
 
     def get_speed(self):
         return self.speed
@@ -102,6 +111,10 @@ class Ball:
 
 
 
+ball = Ball(speed = 0, color = "white", x = 0,y = 0, dx = 1, dy =1)
+
+
+
 # ball = turtle.Turtle()
 # ball.speed(0)
 # ball.shape("circle")
@@ -114,9 +127,6 @@ class Ball:
 # ball.dy = 1
 
 #Movements
-shapesize = "stretch_wid=5, stretch_len=1"
-P1 = Paddle(0, "square", shapesize, "blue", -400, 0)
-P2 = Paddle(0, "square", shapesize, "red", 400, 0)
 
 def Paddle_1_up():
     P1.set_y(P1.get_y() + 30) 
@@ -129,12 +139,12 @@ def Paddle_1_down():
     # y -= 30
     # Paddle_1.sety(y)
 def Paddle_2_up():
-    P2.set_y(P1.get_y() + 30) 
+    P2.set_y(P2.get_y() + 30) 
     # y = Paddle_2.ycor()
     # y += 30
     # Paddle_2.sety(y)
 def Paddle_2_down():
-    P2.set_y(P1.get_y() - 30) 
+    P2.set_y(P2.get_y() - 30) 
     # y = Paddle_2.ycor()
     # y -= 30
     # Paddle_2.sety(y)
@@ -178,7 +188,6 @@ score_2 = 0
 
 
 #All collisions
-ball = Ball(0, "circle", "white", 0, 0, 1, 1)
 
 #ball = turtle.Turtle()
 # ball.speed(0)
@@ -188,8 +197,8 @@ ball = Ball(0, "circle", "white", 0, 0, 1, 1)
 # ball.goto(0, 0)
 
 # #Ball Movement (movement by x amount of pixel)
-# ball.dx = 1
-# ball.dy = 1
+#ball.dx = 1
+#ball.dy = 1
 while True:
     window.update()
     #Ball Movement
@@ -197,13 +206,13 @@ while True:
     ball.set_y(ball.get_y() + ball.get_dy())
     #ball.set_y(ball.ycor() + ball.dy)
     #Boundries (reverses direction when ball hits causing dy to be in a negative direction)
-    if ball.get_y > 290:
+    if ball.get_y() > 290:
         ball.set_y(290)
-        ball.set_dy(ball.get_dy * -1)
+        ball.set_dy(ball.get_dy() * -1)
         #ball.dy *= -1
-    if ball.ycor() < -286:
+    if ball.get_y() < -286:
         ball.set_y(-286)
-        ball.set_dy(ball.get_dy * -1)
+        ball.set_dy(ball.get_dy() * -1)
         
         # ball.sety(-286)
         # ball.dy *= -1
@@ -220,7 +229,7 @@ while True:
     if ball.get_x() > 450:
         ball.set_y(0)
         ball.set_x(0)
-        ball.set_dx(ball.get_dx * -1)
+        ball.set_dx(ball.get_dx() * -1)
         pen_1.clear()
         score_1 += 1
         pen_1.write("Player One: {}".format(score_1), align="center", font=("Comic Sans MS", 22, "bold"))
@@ -239,18 +248,18 @@ while True:
         pen_3.goto(0, 0)
         pen_3.write("Player One WINS", align="center", font=("Comic Sans MS", 22, "bold"))
     #Scoring update player two
-    if ball.xcor() < -450:
-        ball.sety(0)
-        ball.setx(0)
-        ball.dx *= -1
+    if ball.get_x() < -450:
+        ball.set_y(0)
+        ball.set_x(0)
+        ball.set_dx(ball.get_dx() * -1)
         pen_2.clear()
         score_2 += 1
         pen_2.write("Player Two: {}".format(score_2), align="center", font=("Comic Sans MS", 22, "bold"))
     #Winner
     if score_2 == 10:
         ball.hide()
-        P1.hideturtle()
-        P2.hideturtle()
+        P1.hide()
+        P2.hide()
         pen_1.hideturtle()
         pen_2.hideturtle()
         pen_4 = turtle.Turtle()
@@ -261,14 +270,14 @@ while True:
         pen_4.goto(0, 0)
         pen_4.write("Player Two WINS", align="center", font=("Comic Sans MS", 22, "bold"))
     #Bounce (of paddle a)
-    if (ball.xcor() < -378 and ball.get_x() < -378) and ball.ycor() < P1.get_y() + 50 and ball.get_y() > P1.get_y() - 50:
+    if (ball.get_x() < -378 and ball.get_x() < -378) and ball.get_y() < P1.get_y() + 50 and ball.get_y() > P1.get_y() - 50:
         ball.set_x(-378)
-        ball.set_dx(ball.get_dx * -1)
+        ball.set_dx(ball.get_dx() * -1)
         #ball.dx *= -1
     #Bounce (of paddle b)
-    if (ball.xcor() > 378 and ball.get_x() > 378) and ball.get_y() < P2.get_y() + 50 and ball.get_y() > P2.get_y() - 50:
+    if (ball.get_x() > 378 and ball.get_x() > 378) and ball.get_y() < P2.get_y() + 50 and ball.get_y() > P2.get_y() - 50:
         ball.set_x(378)
-        ball.set_dx(ball.get_dx * -1)
+        ball.set_dx(ball.get_dx() * -1)
         #ball.dx *= -1
 
 
