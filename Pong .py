@@ -1,4 +1,9 @@
 import turtle
+import os
+import pygame
+import neat
+import time
+import pickle
 
 #Boundary
 Boundary = turtle.Turtle()
@@ -15,6 +20,16 @@ Boundary.left(90)
 Boundary.forward(900)
 Boundary.left(90)
 Boundary.forward(600)
+
+class GameInformation:
+       def __init__(self, left_hits, right_hits, left_score, right_score):
+              self.left_hits = left_hits
+              self.right_hits = right_hits
+              self.left_score = left_score
+              self.right_score = right_score
+
+
+#Game itself loop
 
 class Paddle(turtle.Turtle):
 	def __init__(self, x, y, color):
@@ -110,10 +125,8 @@ elif ball.xcor() < -350:
 # #Ball Movement (movement by x amount of pixel)
 # ball.dx = 1
 # ball.dy = 1
-def Gameloop():
+def Gameloop(left_hits, right_hits, score_a, score_b):
     #Score
-    score_a = 0
-    score_b = 0
     while True:
         wn.update()
 
@@ -155,14 +168,20 @@ def Gameloop():
 
             # Paddle and ball collisions
             if ball.xcor() < -340 and ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() - 50:
-                ball.dx *= -1 
+                left_hits += 1 
+                ball.dx *= -1
+
                 #os.system("afplay bounce.wav&")
             
             elif ball.xcor() > 340 and ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50:
+                right_hits += 1
                 ball.dx *= -1
                 #os.system("afplay bounce.wav&")
 
-            if score_a == 10:
+            
+
+
+            if score_a == 2:
                 ball.hideturtle()
                 paddle_a.hideturtle()
                 paddle_b.hideturtle()
@@ -183,9 +202,11 @@ def Gameloop():
                 GG_1.hideturtle()
                 GG_1.goto(0, -175)
                 GG_1.write("Good Game", align = "center", font = ("Impact", 36, "bold"))
+                game_info = GameInformation(left_hits, right_hits, score_a, score_b)
+                return game_info
             
 
-            if score_b == 10:
+            if score_b == 2:
                 ball.hideturtle()
                 paddle_a.hideturtle()
                 paddle_b.hideturtle()
@@ -206,8 +227,30 @@ def Gameloop():
                 GG_2.hideturtle()
                 GG_2.goto(0, -175)
                 GG_2.write("Good Game", align = "center", font = ("Impact", 36, "bold"))
+                game_info = GameInformation(left_hits, right_hits, score_a, score_b)
+                return game_info
+
+
+
+
+
+if __name__ == '__main__':
+        left_hits = 0
+        right_hits = 0 
+        score_a = 0 
+        score_b = 0
+        
+        game_info = Gameloop(left_hits, right_hits, score_a, score_b)
+
+
+        # Print the game information
+        print("Game Information:")
+        print(f"Left Hits: {game_info.left_hits}")
+        print(f"Right Hits: {game_info.right_hits}")
+        print(f"Left Score: {game_info.left_score}")
+        print(f"Right Score: {game_info.right_score}")
+
+        
 
 
         
-if __name__ == "__main__":
-       Gameloop()
