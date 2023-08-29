@@ -40,13 +40,31 @@ class Paddle(turtle.Turtle):
 			self.shapesize(stretch_wid=5, stretch_len=1)
 			self.penup()
 			self.goto(x, y)
+	def __init__(self, x, y, color):
+			super().__init__()
+			self.speed(0)
+			self.shape("square")
+			self.color(color)
+			self.shapesize(stretch_wid=5, stretch_len=1)
+			self.penup()
+			self.goto(x, y)
 
 	def move_up(self):
 			y = self.ycor()
 			if y < 240:  # Adjust the limit as needed
 					y += 20
 			self.sety(y)
+	def move_up(self):
+			y = self.ycor()
+			if y < 240:  # Adjust the limit as needed
+					y += 20
+			self.sety(y)
 
+	def move_down(self):
+			y = self.ycor()
+			if y > -240:  # Adjust the limit as needed
+					y -= 20
+			self.sety(y)
 	def move_down(self):
 			y = self.ycor()
 			if y > -240:  # Adjust the limit as needed
@@ -98,6 +116,8 @@ score_b = 0
 def start_game():
 	global game_started
 	game_started = True
+	global game_started
+	game_started = True
 
 # Keyboard bindings
 wn.listen()
@@ -114,7 +134,20 @@ if ball.xcor() > 350:
 	pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
 	ball.goto(0, 0)
 	ball.dx *= -1
+# Left and right
+if ball.xcor() > 350:
+	score_a += 1
+	pen.clear()
+	pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+	ball.goto(0, 0)
+	ball.dx *= -1
 
+elif ball.xcor() < -350:
+	score_b += 1
+	pen.clear()
+	pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+	ball.goto(0, 0)
+	ball.dx *= -1
 elif ball.xcor() < -350:
 	score_b += 1
 	pen.clear()
