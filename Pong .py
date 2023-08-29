@@ -1,4 +1,3 @@
-
 import turtle
 
 #Boundary
@@ -18,27 +17,26 @@ Boundary.left(90)
 Boundary.forward(600)
 
 class Paddle(turtle.Turtle):
-    def __init__(self, x, y, color):
-        super().__init__()
-        self.speed(0)
-        self.shape("square")
-        self.color(color)
-        self.shapesize(stretch_wid=5, stretch_len=1)
-        self.penup()
-        self.goto(x, y)
+	def __init__(self, x, y, color):
+			super().__init__()
+			self.speed(0)
+			self.shape("square")
+			self.color(color)
+			self.shapesize(stretch_wid=5, stretch_len=1)
+			self.penup()
+			self.goto(x, y)
 
-    def move_up(self):
-       y = self.ycor()
-       if y < 240:  # Adjust the limit as needed
-            y += 20
-       self.sety(y)
+	def move_up(self):
+			y = self.ycor()
+			if y < 240:  # Adjust the limit as needed
+					y += 20
+			self.sety(y)
 
-
-    def move_down(self):
-        y = self.ycor()
-        if y > -240:  # Adjust the limit as needed
-            y -= 20
-        self.sety(y)
+	def move_down(self):
+			y = self.ycor()
+			if y > -240:  # Adjust the limit as needed
+					y -= 20
+			self.sety(y)
 
 class Ball(turtle.Turtle):
     def __init__(self):
@@ -71,8 +69,8 @@ pen.speed(0)
 pen.color("white")
 pen.penup()
 pen.hideturtle()
-pen.goto(0, 260)
-pen.write("Player A: 0  Player B: 0", align="center", font=("Courier", 24, "normal"))
+pen.goto(0, 235)
+pen.write("Pong", align= "center", font=("Comic Sans MS", 38, "bold"))
 
 # Set initial state for ball movement
 game_started = False
@@ -83,8 +81,8 @@ score_b = 0
 
 # Function to start the game
 def start_game():
-    global game_started
-    game_started = True
+	global game_started
+	game_started = True
 
 # Keyboard bindings
 wn.listen()
@@ -94,103 +92,122 @@ wn.onkeypress(paddle_a.move_down, "s")
 wn.onkeypress(paddle_b.move_up, "Up")
 wn.onkeypress(paddle_b.move_down, "Down")
 
+# Left and right
+if ball.xcor() > 350:
+	score_a += 1
+	pen.clear()
+	pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+	ball.goto(0, 0)
+	ball.dx *= -1
 
+elif ball.xcor() < -350:
+	score_b += 1
+	pen.clear()
+	pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+	ball.goto(0, 0)
+	ball.dx *= -1
 
-# Main game loop
-while True:
-    wn.update()
+# #Ball Movement (movement by x amount of pixel)
+# ball.dx = 1
+# ball.dy = 1
+def Gameloop():
+    #Score
+    score_a = 0
+    score_b = 0
+    while True:
+        wn.update()
 
-    
-    # Move the ball
-    if game_started:
+        
         # Move the ball
-        ball.setx(ball.xcor() + ball.dx)
-        ball.sety(ball.ycor() + ball.dy)
+        if game_started:
+            # Move the ball
+            ball.setx(ball.xcor() + ball.dx)
+            ball.sety(ball.ycor() + ball.dy)
 
-    # if(wn.onkeypress("space")) :
-    #     ball.setx(ball.xcor() + ball.dx)
-    #     ball.sety(ball.ycor() + ball.dy)
+        # if(wn.onkeypress("space")) :
+        #     ball.setx(ball.xcor() + ball.dx)
+        #     ball.sety(ball.ycor() + ball.dy)
 
-    # Border checking
-    
+        # Border checking
+            # Top and bottom
+            if ball.ycor() > 290:
+                ball.sety(290)
+                ball.dy *= -1
+        
+            elif ball.ycor() < -290:
+                ball.sety(-290)
+                ball.dy *= -1
 
-    # Top and bottom
-        if ball.ycor() > 290:
-            ball.sety(290)
-            ball.dy *= -1
+            # Left and right
+            if ball.xcor() > 350:
+                score_a += 1
+                pen.clear()
+                pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+                ball.goto(0, 0)
+                ball.dx *= -1
+
+            elif ball.xcor() < -350:
+                score_b += 1
+                pen.clear()
+                pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+                ball.goto(0, 0)
+                ball.dx *= -1
+
+            # Paddle and ball collisions
+            if ball.xcor() < -340 and ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() - 50:
+                ball.dx *= -1 
+                #os.system("afplay bounce.wav&")
             
+            elif ball.xcor() > 340 and ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50:
+                ball.dx *= -1
+                #os.system("afplay bounce.wav&")
+
+            if score_a == 10:
+                ball.hideturtle()
+                paddle_a.hideturtle()
+                paddle_b.hideturtle()
+                wn.listen()
+                paddle_a.setposition(1000, 1000)
+                paddle_b.setposition(1100 , 1000)
+                win_1 = turtle.Turtle()
+                win_1.speed(0)
+                win_1.color("white")
+                win_1.penup()
+                win_1.hideturtle()
+                win_1.goto(0, 0)
+                win_1.write("Player 1 is the winner", align = "center", font = ("Impact", 28, "normal"))
+                GG_1 = turtle.Turtle()
+                GG_1.speed(0)
+                GG_1.color("yellow")
+                GG_1.penup()
+                GG_1.hideturtle()
+                GG_1.goto(0, -175)
+                GG_1.write("Good Game", align = "center", font = ("Impact", 36, "bold"))
+            
+
+            if score_b == 10:
+                ball.hideturtle()
+                paddle_a.hideturtle()
+                paddle_b.hideturtle()
+                wn.listen()
+                paddle_a.setposition(1000, 1000)
+                paddle_b.setposition(1100 , 1000)
+                win_2 = turtle.Turtle()
+                win_2.speed(0)
+                win_2.color("white")
+                win_2.penup()
+                win_2.hideturtle()
+                win_2.goto(0, 0)
+                win_2.write("Player 2 is the winner", align = "center", font = ("Impact", 28, "normal"))
+                GG_2 = turtle.Turtle()
+                GG_2.speed(0)
+                GG_2.color("green")
+                GG_2.penup()
+                GG_2.hideturtle()
+                GG_2.goto(0, -175)
+                GG_2.write("Good Game", align = "center", font = ("Impact", 36, "bold"))
+
+
         
-        elif ball.ycor() < -290:
-            ball.sety(-290)
-            ball.dy *= -1
-
-        # Left and right
-        if ball.xcor() > 350:
-            score_a += 1
-            pen.clear()
-            pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
-            ball.goto(0, 0)
-            ball.dx *= -1
-
-        elif ball.xcor() < -350:
-            score_b += 1
-            pen.clear()
-            pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
-            ball.goto(0, 0)
-            ball.dx *= -1
-
-        # Paddle and ball collisions
-        if ball.xcor() < -340 and ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() - 50:
-            ball.dx *= -1 
-            #os.system("afplay bounce.wav&")
-        
-        elif ball.xcor() > 340 and ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50:
-            ball.dx *= -1
-            #os.system("afplay bounce.wav&")
-
-        if score_a == 10:
-            ball.hideturtle();
-            paddle_a.hideturtle();
-            paddle_b.hideturtle();
-            wn.listen()
-            paddle_a.setposition(1000, 1000)
-            paddle_b.setposition(1100 , 1000)
-            win_1 = turtle.Turtle()
-            win_1.speed(0)
-            win_1.color("white")
-            win_1.penup()
-            win_1.hideturtle()
-            win_1.goto(0, 0)
-            win_1.write("Player 1 is the winner", align = "center", font = ("Impact", 28, "normal"))
-            GG_1 = turtle.Turtle()
-            GG_1.speed(0)
-            GG_1.color("yellow")
-            GG_1.penup()
-            GG_1.hideturtle()
-            GG_1.goto(0, -175)
-            GG_1.write("Good Game", align = "center", font = ("Impact", 36, "bold"))
-        
-
-        if score_b == 10:
-            ball.hideturtle();
-            paddle_a.hideturtle();
-            paddle_b.hideturtle();
-            wn.listen()
-            paddle_a.setposition(1000, 1000)
-            paddle_b.setposition(1100 , 1000)
-            win_2 = turtle.Turtle()
-            win_2.speed(0)
-            win_2.color("white")
-            win_2.penup()
-            win_2.hideturtle()
-            win_2.goto(0, 0)
-            win_2.write("Player 2 is the winner", align = "center", font = ("Impact", 28, "normal"))
-            GG_2 = turtle.Turtle()
-            GG_2.speed(0)
-            GG_2.color("green")
-            GG_2.penup()
-            GG_2.hideturtle()
-            GG_2.goto(0, -175)
-            GG_2.write("Good Game", align = "center", font = ("Impact", 36, "bold"))
-        
-    
+if __name__ == "__main__":
+       Gameloop()
