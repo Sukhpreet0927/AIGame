@@ -32,6 +32,7 @@ class GameInformation:
 #Game itself loop
 
 class Paddle(turtle.Turtle):
+<<<<<<< HEAD
     def __init__(self, x, y, color):
         super().__init__()
         self.speed(0)
@@ -55,6 +56,48 @@ class Paddle(turtle.Turtle):
 
     def get_y(self):
         return self.ycor()
+=======
+	def __init__(self, x, y, color):
+			super().__init__()
+			self.speed(0)
+			self.shape("square")
+			self.color(color)
+			self.shapesize(stretch_wid=5, stretch_len=1)
+			self.penup()
+			self.goto(x, y)
+	def __init__(self, x, y, color):
+			super().__init__()
+			self.speed(0)
+			self.shape("square")
+			self.color(color)
+			self.shapesize(stretch_wid=5, stretch_len=1)
+			self.penup()
+			self.goto(x, y)
+
+	def move_up(self):
+			y = self.ycor()
+			if y < 240:  # Adjust the limit as needed
+					y += 20
+			self.sety(y)
+	def move_up(self):
+			y = self.ycor()
+			if y < 240:  # Adjust the limit as needed
+					y += 20
+			self.sety(y)
+
+	def move_down(self):
+			y = self.ycor()
+			if y > -240:  # Adjust the limit as needed
+					y -= 20
+			self.sety(y)
+	def move_down(self):
+			y = self.ycor()
+			if y > -240:  # Adjust the limit as needed
+					y -= 20
+			self.sety(y)
+	def get_y(self):
+		return self.ycor()
+>>>>>>> 20a2694ba43df8045227809999352b48b91c14a8
 
 class Ball(turtle.Turtle):
     def __init__(self):
@@ -67,10 +110,13 @@ class Ball(turtle.Turtle):
         self.dx = 2
         self.dy = 2
 
+<<<<<<< HEAD
     def move(self):
         self.setx(self.xcor() + self.dx)
         self.sety(self.ycor() + self.dy)
 
+=======
+>>>>>>> 20a2694ba43df8045227809999352b48b91c14a8
 # Create the screen
 wn = turtle.Screen()
 wn.title("Pong")
@@ -156,9 +202,14 @@ def Gameloop(left_hits, right_hits, score_a, score_b):
         # Move the ball
         if game_started:
             # Move the ball
+<<<<<<< HEAD
             # ball.setx(ball.xcor() + ball.dx)
             # ball.sety(ball.ycor() + ball.dy)
             ball.move()
+=======
+            ball.setx(ball.xcor() + ball.dx)
+            ball.sety(ball.ycor() + ball.dy)
+>>>>>>> 20a2694ba43df8045227809999352b48b91c14a8
 
         # if(wn.onkeypress("space")) :
         #     ball.setx(ball.xcor() + ball.dx)
@@ -204,7 +255,11 @@ def Gameloop(left_hits, right_hits, score_a, score_b):
             
 
 
+<<<<<<< HEAD
             if score_a == 5:
+=======
+            if score_a == 2:
+>>>>>>> 20a2694ba43df8045227809999352b48b91c14a8
                 ball.hideturtle()
                 paddle_a.hideturtle()
                 paddle_b.hideturtle()
@@ -229,7 +284,11 @@ def Gameloop(left_hits, right_hits, score_a, score_b):
                 return game_info
             
 
+<<<<<<< HEAD
             if score_b == 5:
+=======
+            if score_b == 2:
+>>>>>>> 20a2694ba43df8045227809999352b48b91c14a8
                 ball.hideturtle()
                 paddle_a.hideturtle()
                 paddle_b.hideturtle()
@@ -273,4 +332,11 @@ if __name__ == '__main__':
         print(f"Left Score: {game_info.left_score}")
         print(f"Right Score: {game_info.right_score}")
 
+<<<<<<< HEAD
         
+=======
+        
+
+
+        
+>>>>>>> 20a2694ba43df8045227809999352b48b91c14a8
